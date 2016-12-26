@@ -1,6 +1,6 @@
 from KissDownloader import *
-from tkinter import *
-from tkinter.ttk import *
+from Tkinter import *
+from ttk import *
 
 class App(Frame):
 
@@ -8,7 +8,7 @@ class App(Frame):
         Frame.__init__(self)
         self.master.title("KissDownloader")
         self.grid()
-        self.master.geometry("585x320")
+        self.master.geometry("640x320")
 
 
     # create label for site select
@@ -69,15 +69,15 @@ class App(Frame):
         global config
         # create a configparser instance and open config.ini
         config = configparser.ConfigParser()
-        config.read("config.ini", encoding='utf-8')
+        config.read("config.ini")
 
         # fill gui from what is in the config
-        site_select = config["Website"]
+        site_select = config._sections["Website"]
         if len(site_select["subsite"]) != 0:
             self.site_select.select_clear()
             self.site_select.set(site_select["subsite"])
 
-        auth = config["login"]
+        auth = config._sections["login"]
         if len(auth["username"]) != 0:
             self.user_name.delete(0, END)
             self.user_name.insert(0, auth["username"])
@@ -86,7 +86,7 @@ class App(Frame):
             self.user_password.delete(0, END)
             self.user_password.insert (0, auth["password"])
 
-        show = config["show"]
+        show = config._sections["show"]
         if len(show["title"]) != 0:
             self.title.delete(0, END)
             self.title.insert(0, show["title"])
@@ -95,17 +95,17 @@ class App(Frame):
             self.url.delete(0, END)
             self.url.insert(0, show["anime"])
 
-        if len(show["Season"]) != 0:
+        if len(show["season"]) != 0:
             self.season_num.delete(0, END)
-            self.season_num.insert(0, show["Season"])
+            self.season_num.insert(0, int(show["season"]))
 
-        if len(show["episodeMin"]) != 0:
+        if len(show["episodemin"]) != 0:
             self.episode_min.delete(0, END)
-            self.episode_min.insert(0, show["episodeMin"])
+            self.episode_min.insert(0, int(show["episodemin"]))
 
-        if len(show["episodeMax"]) != 0:
+        if len(show["episodemax"]) != 0:
             self.episode_max.delete(0, END)
-            self.episode_max.insert(0, show["episodeMax"])
+            self.episode_max.insert(0, int(show["episodemax"]))
 
         if len(show["destination"]) != 0:
             self.destination.delete(0, END)
@@ -123,7 +123,7 @@ class App(Frame):
         else:
             destination = destination_folder + "/" + self.title.get() + "/"
         params = [self.user_name.get(), self.user_password.get(), self.title.get(), self.url.get(), str(self.season_num.get()), str(self.episode_min.get()), str(self.episode_max.get()), destination, self.quality_select.get(), self.site_select.get()]
-        print(params)
+        # print(params)
         KissDownloader(params)
 
 

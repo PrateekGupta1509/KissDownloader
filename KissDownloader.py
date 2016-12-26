@@ -1,31 +1,9 @@
-import pip
 import time
 import configparser
 import os
-try:
-    pip.main(['install', '--upgrade', 'pip'])
-except:
-    pass
-try:
-    from bs4 import BeautifulSoup
-except ImportError:
-    pip.main(['install', 'BeautifulSoup4'])
-    from bs4 import BeautifulSoup
-try:
-    import pySmartDL
-except ImportError:
-    pip.main(['install', 'pySmartDL'])
-    import pySmartDL
-
-try:
-    pip.main(['install', '--upgrade', 'cfscrape'])
-    import cfscrape
-except:
-    pip.main(['install', 'cfscrape'])
-    import cfscrape
-
-
-
+from bs4 import BeautifulSoup
+import pySmartDL
+import cfscrape
 
 # stuff that I may do... eventually
 # TODO error management
@@ -46,8 +24,8 @@ except:
 
 class KissDownloader:
     def __init__(self, params):
-        for param in params:
-            print(param)
+        # for param in params:
+            # print(param)
         # create a webdriver instance with a lenient timeout duration
         self.scraper = cfscrape.create_scraper()
 
@@ -227,14 +205,15 @@ class KissDownloader:
 
         filename = name
         path = destination + filename
-        obj = pySmartDL.SmartDL(url, destination, progress_bar=False, fix_urls=True)
+        obj = pySmartDL.SmartDL(url, destination, progress_bar=True, fix_urls=True)
+        print "Downloading", filename
         obj.start(blocking=False)
         location = obj.get_dest()
 
         while True:
             if obj.isFinished():
                 break
-            print(name + "\t " + str(float("{0:.2f}".format((float(obj.get_progress())*100)))) + "% done at " + pySmartDL.utils.sizeof_human(obj.get_speed(human=False)) + "/s")
+            # print(name + "\t " + str(float("{0:.2f}".format((float(obj.get_progress())*100)))) + "% done at " + pySmartDL.utils.sizeof_human(obj.get_speed(human=False)) + "/s")
             #*epiode name* 0.38% done at 2.9 MB/s
             time.sleep(1)
         if obj.isFinished():
@@ -329,7 +308,7 @@ class KissDownloader:
 
 if __name__ == "__main__":
     #params = [user, password, title, anime, season, episode_min, episode_max, destination, quality, site]
-    print('please run from KissDownloaderGUI.py')
+    # print('please run from KissDownloaderGUI.py')
     KissDownloader
     episodes_list = []
     for tup in episodes_list:
